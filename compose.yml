@@ -67,11 +67,12 @@ services:
     environment:
       CF_API_TOKEN: ${CF_API_TOKEN}
     volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy:/etc/caddy:ro
       - ./caddy/data:/data
       - ./sites:/srv:ro
       - /volume1/docker/repos/maisonbudget/ekus/site:/srv/ekus:ro
       - /volume1/docker/repos/ptcg/app:/srv/ptcg:ro
+      - /volume1/docker/repos/hub/site:/srv/hub:ro
     depends_on:
       - ts-web
 
@@ -121,3 +122,15 @@ services:
       - /volume1/docker/repos/ptcg/jobs:/jobs
       - ./cron/ptcg-jobs:/etc/crontabs/root:ro
     command: crond -f -l 8
+
+  hub-api:
+    image: postgrest/postgrest:v12.2.3
+    container_name: hub-api
+    restart: unless-stopped
+    environment:
+      PGRST_DB_URI: postgres://hub_api:${HUB_DB_PASSWORD}@db:5432/hub
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_ANON_ROLE: hub_anon
+    depends_on:
+      db:
+        condition: service_healthy

@@ -25,6 +25,11 @@ ekus.dromnas.win {
 }
 
 vault.dromnas.win {
+	@test method HEAD
+	header @test {
+		-Cross-Origin-Resource-Policy
+		defer
+	}
 	encode gzip
 	reverse_proxy vault:80
 }
@@ -34,4 +39,13 @@ ptcg.dromnas.win {
 		reverse_proxy ptcg-nas:80
 	}
 	import app ptcg
+}
+
+hub.dromnas.win {
+	import app hub
+}
+
+# l'interface d'UGOS, en HTTPS
+nas.dromnas.win {
+	reverse_proxy 192.168.1.31:9999
 }
