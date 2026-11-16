@@ -1,14 +1,25 @@
-# Ekus — recette sur le NAS
-:8086 {
+{
+	acme_dns cloudflare {env.CF_API_TOKEN}
+}
+
+# /api vers le PostgREST de l'appli, le reste vers son site
+(app) {
 	encode gzip
-
 	handle_path /api/* {
-		reverse_proxy ekus-api:3000
+		reverse_proxy {args[0]}-api:3000
 	}
-
 	handle {
-		root * /srv/ekus
+		root * /srv/{args[0]}
 		header Cache-Control "no-cache"
 		file_server
 	}
+}
+
+ekus.dromnas.win {
+	import app ekus
+}
+
+# accès de secours sans domaine : http://192.168.1.31:8086
+:8086 {
+	import app ekus
 }

@@ -29,18 +29,6 @@ services:
       db:
         condition: service_healthy
 
-  caddy:
-    image: caddy:2-alpine
-    container_name: caddy
-    restart: unless-stopped
-    ports:
-      - "8086:8086"
-    volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./caddy/data:/data
-      - ./sites:/srv:ro
-      - /volume1/docker/repos/maisonbudget/ekus/site:/srv/ekus:ro
-
   cron:
     image: docker:cli
     container_name: cron
@@ -53,3 +41,33 @@ services:
       - /volume1/backup:/volume1/backup
     # 2 h 30 : juste avant les instantanés de 3 h
     command: sh -c "echo '30 2 * * * /backup/dump.sh >> /volume1/backup/dumps/cron.log 2>&1' | crontab - && crond -f -l 8"
+
+  # carte réseau Tailscale de Caddy : son propre 443, sans gêner le nginx d'UGOS
+  ts-web:
+    image: tailscale/tailscale:latest
+    container_name: ts-web
+    restart: unless-stopped
+    environment:
+      TS_HOSTNAME: dromnas-web
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "true"
+    volumes:
+      - ./tailscale-web:/var/lib/tailscale
+    ports:
+      - "8086:8086"
+
+  caddy:
+    build: ./caddy
+    image: dromnas-caddy
+    container_name: caddy
+    restart: unless-stopped
+    network_mode: service:ts-web
+    environment:
+      CF_API_TOKEN: ${CF_API_TOKEN}
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/data:/data
+      - ./sites:/srv:ro
+      - /volume1/docker/repos/maisonbudget/ekus/site:/srv/ekus:ro
+    depends_on:
+      - ts-web

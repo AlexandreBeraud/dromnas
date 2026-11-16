@@ -2,3 +2,4 @@
 pgdata/
 caddy/data/
 sites/
+tailscale-web/
