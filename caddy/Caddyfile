@@ -28,3 +28,10 @@ vault.dromnas.win {
 	encode gzip
 	reverse_proxy vault:80
 }
+
+ptcg.dromnas.win {
+	handle_path /nas/* {
+		reverse_proxy ptcg-nas:80
+	}
+	import app ptcg
+}

@@ -1,0 +1,4 @@
+# dump de toutes les bases, juste avant les instantanés de 3 h
+30 2 * * * /backup/dump.sh >> /volume1/backup/dumps/cron.log 2>&1
+# sauvegarde PTCG, visible dans ses Réglages
+45 2 * * * /volume1/docker/repos/ptcg/jobs/backup.sh >> /volume1/docker/repos/ptcg/jobs/backup.log 2>&1

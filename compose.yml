@@ -39,8 +39,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./backup:/backup:ro
       - /volume1/backup:/volume1/backup
+      - ./cron/crontab:/etc/crontabs/root:ro
+      - /volume1/docker/repos:/volume1/docker/repos
     # 2 h 30 : juste avant les instantanés de 3 h
-    command: sh -c "echo '30 2 * * * /backup/dump.sh >> /volume1/backup/dumps/cron.log 2>&1' | crontab - && crond -f -l 8"
+    command: sh -c "apk add --no-cache bash >/dev/null; crond -f -l 8"
 
   # carte réseau Tailscale de Caddy : son propre 443, sans gêner le nginx d'UGOS
   ts-web:
@@ -69,6 +71,7 @@ services:
       - ./caddy/data:/data
       - ./sites:/srv:ro
       - /volume1/docker/repos/maisonbudget/ekus/site:/srv/ekus:ro
+      - /volume1/docker/repos/ptcg/app:/srv/ptcg:ro
     depends_on:
       - ts-web
 
@@ -84,3 +87,37 @@ services:
     volumes:
       - ./vaultwarden:/data
 
+
+  ptcg-nas:
+    image: filebrowser/filebrowser:latest
+    container_name: ptcg-nas
+    user: "0:0"
+    restart: unless-stopped
+    volumes:
+      - /volume1/fichiers/PTCG:/srv
+      - ./filebrowser:/database
+
+  ptcg-api:
+    image: postgrest/postgrest:v12.2.3
+    container_name: ptcg-api
+    restart: unless-stopped
+    environment:
+      PGRST_DB_URI: postgres://ptcg_api:${PTCG_DB_PASSWORD}@db:5432/ptcg
+      PGRST_DB_SCHEMAS: public,v2
+      PGRST_DB_ANON_ROLE: ptcg_anon
+      PGRST_JWT_SECRET: ${PTCG_JWT_SECRET}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  ptcg-jobs:
+    image: node:22-alpine
+    container_name: ptcg-jobs
+    restart: unless-stopped
+    working_dir: /jobs
+    environment:
+      TZ: CET-1CEST,M3.5.0,M10.5.0/3
+    volumes:
+      - /volume1/docker/repos/ptcg/jobs:/jobs
+      - ./cron/ptcg-jobs:/etc/crontabs/root:ro
+    command: crond -f -l 8
