@@ -74,6 +74,7 @@ services:
       - /volume1/docker/repos/ptcg/app:/srv/ptcg:ro
       - /volume1/docker/repos/hub/site:/srv/hub:ro
       - /volume1/docker/repos/daglega/site:/srv/daglega:ro
+      - /volume1/docker/repos/frambod/site:/srv/frambod:ro
     depends_on:
       - ts-web
 
@@ -160,3 +161,15 @@ services:
       - /volume1/docker/repos/daglega/uploads-service:/app:ro
       - /volume1/applis/daglega:/data
     command: node /app/server.js
+
+  frambod-api:
+    image: postgrest/postgrest:v12.2.3
+    container_name: frambod-api
+    restart: unless-stopped
+    environment:
+      PGRST_DB_URI: postgres://frambod_api:${FRAMBOD_DB_PASSWORD}@db:5432/frambod
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_ANON_ROLE: frambod_anon
+    depends_on:
+      db:
+        condition: service_healthy

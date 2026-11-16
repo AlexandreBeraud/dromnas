@@ -70,3 +70,7 @@ daglega.dromnas.win {
 		file_server
 	}
 }
+
+frambod.dromnas.win {
+	import app frambod
+}
