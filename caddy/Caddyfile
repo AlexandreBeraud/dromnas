@@ -1,0 +1,14 @@
+# Ekus — recette sur le NAS
+:8086 {
+	encode gzip
+
+	handle_path /api/* {
+		reverse_proxy ekus-api:3000
+	}
+
+	handle {
+		root * /srv/ekus
+		header Cache-Control "no-cache"
+		file_server
+	}
+}
