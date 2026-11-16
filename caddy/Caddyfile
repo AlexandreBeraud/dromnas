@@ -49,3 +49,24 @@ hub.dromnas.win {
 nas.dromnas.win {
 	reverse_proxy 192.168.1.31:9999
 }
+
+daglega.dromnas.win {
+	encode gzip
+	# l'appli envoie une clé factice, PostgREST n'a pas de secret JWT
+	handle_path /rest/v1/* {
+		reverse_proxy daglega-api:3000 {
+			header_up -Authorization
+		}
+	}
+	handle /upload {
+		reverse_proxy daglega-uploads:3005
+	}
+	handle /files/* {
+		reverse_proxy daglega-uploads:3005
+	}
+	handle {
+		root * /srv/daglega
+		header Cache-Control "no-cache"
+		file_server
+	}
+}

@@ -73,6 +73,7 @@ services:
       - /volume1/docker/repos/maisonbudget/ekus/site:/srv/ekus:ro
       - /volume1/docker/repos/ptcg/app:/srv/ptcg:ro
       - /volume1/docker/repos/hub/site:/srv/hub:ro
+      - /volume1/docker/repos/daglega/site:/srv/daglega:ro
     depends_on:
       - ts-web
 
@@ -95,7 +96,7 @@ services:
     user: "0:0"
     restart: unless-stopped
     volumes:
-      - /volume1/fichiers/PTCG:/srv
+      - /volume1/applis/ptcg:/srv
       - ./filebrowser:/database
 
   ptcg-api:
@@ -134,3 +135,28 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+  daglega-api:
+    image: postgrest/postgrest:v12.2.3
+    container_name: daglega-api
+    restart: unless-stopped
+    environment:
+      PGRST_DB_URI: postgres://daglega_api:${DAGLEGA_DB_PASSWORD}@db:5432/daglega
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_ANON_ROLE: daglega_anon
+    depends_on:
+      db:
+        condition: service_healthy
+
+  daglega-uploads:
+    image: node:22-alpine
+    container_name: daglega-uploads
+    restart: unless-stopped
+    user: "0:0"
+    environment:
+      DATA_DIR: /data
+      PORT: "3005"
+    volumes:
+      - /volume1/docker/repos/daglega/uploads-service:/app:ro
+      - /volume1/applis/daglega:/data
+    command: node /app/server.js
