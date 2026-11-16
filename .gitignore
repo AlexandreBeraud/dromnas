@@ -1,5 +1,6 @@
+caddy/data/
 .env
 pgdata/
-caddy/data/
 sites/
 tailscale-web/
+vaultwarden/

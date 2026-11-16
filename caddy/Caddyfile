@@ -23,3 +23,8 @@ ekus.dromnas.win {
 :8086 {
 	import app ekus
 }
+
+vault.dromnas.win {
+	encode gzip
+	reverse_proxy vault:80
+}

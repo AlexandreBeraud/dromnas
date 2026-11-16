@@ -71,3 +71,16 @@ services:
       - /volume1/docker/repos/maisonbudget/ekus/site:/srv/ekus:ro
     depends_on:
       - ts-web
+
+  vault:
+    image: vaultwarden/server:latest
+    container_name: vault
+    restart: unless-stopped
+    environment:
+      DOMAIN: https://vault.dromnas.win
+      # ouvert le temps de créer ton compte, refermé juste après
+      SIGNUPS_ALLOWED: "false"
+      TZ: Europe/Paris
+    volumes:
+      - ./vaultwarden:/data
+
