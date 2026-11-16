@@ -79,3 +79,10 @@ signal.dromnas.win {
 	encode gzip
 	reverse_proxy signal-web:8080
 }
+
+codex.dromnas.win {
+	encode gzip
+	root * /srv/codex
+	header Cache-Control "no-cache"
+	file_server
+}
