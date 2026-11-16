@@ -74,3 +74,8 @@ daglega.dromnas.win {
 frambod.dromnas.win {
 	import app frambod
 }
+
+signal.dromnas.win {
+	encode gzip
+	reverse_proxy signal-web:8080
+}

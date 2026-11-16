@@ -173,3 +173,37 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+  signal-web:
+    build:
+      context: /volume1/docker/repos/signal
+      dockerfile_inline: |
+        FROM python:3.12-slim
+        COPY requirements.txt /tmp/
+        RUN pip install --no-cache-dir -r /tmp/requirements.txt
+    image: dromnas-signal
+    container_name: signal-web
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      TZ: CET-1CEST,M3.5.0,M10.5.0/3
+    volumes:
+      - /volume1/docker/repos/signal:/app
+    command: python app.py
+    depends_on:
+      db:
+        condition: service_healthy
+
+  signal-poller:
+    image: dromnas-signal
+    container_name: signal-poller
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      TZ: CET-1CEST,M3.5.0,M10.5.0/3
+    volumes:
+      - /volume1/docker/repos/signal:/app
+    # un passage toutes les 15 minutes, comme la crontab du Pi
+    command: sh -c "while true; do python poller.py >> poller.log 2>&1; sleep 900; done"
+    depends_on:
+      - signal-web
