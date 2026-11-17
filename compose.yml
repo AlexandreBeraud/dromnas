@@ -14,7 +14,9 @@ services:
       - /volume1/backup/dumps:/dumps
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U drom"]
-      interval: 10s
+      interval: 1h
+      start_period: 60s
+      start_interval: 5s
 
   ekus-api:
     image: postgrest/postgrest:v12.2.3
@@ -39,10 +41,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./backup:/backup:ro
       - /volume1/backup:/volume1/backup
-      - ./cron/crontab:/etc/crontabs/root:ro
+      - ./cron/crontab:/crontab:ro
       - /volume1/docker/repos:/volume1/docker/repos
     # 2 h 30 : juste avant les instantanés de 3 h
-    command: sh -c "apk add --no-cache bash >/dev/null; crond -f -l 8"
+    command: sh -c "apk add --no-cache bash >/dev/null; cp /crontab /etc/crontabs/root && crond -f -l 8"
 
   # carte réseau Tailscale de Caddy : son propre 443, sans gêner le nginx d'UGOS
   ts-web:
@@ -82,6 +84,8 @@ services:
   vault:
     image: vaultwarden/server:latest
     container_name: vault
+    healthcheck:
+      disable: true
     restart: unless-stopped
     environment:
       DOMAIN: https://vault.dromnas.win
@@ -95,6 +99,8 @@ services:
   ptcg-nas:
     image: filebrowser/filebrowser:latest
     container_name: ptcg-nas
+    healthcheck:
+      disable: true
     user: "0:0"
     restart: unless-stopped
     volumes:
@@ -123,8 +129,8 @@ services:
       TZ: CET-1CEST,M3.5.0,M10.5.0/3
     volumes:
       - /volume1/docker/repos/ptcg/jobs:/jobs
-      - ./cron/ptcg-jobs:/etc/crontabs/root:ro
-    command: crond -f -l 8
+      - ./cron/ptcg-jobs:/crontab:ro
+    command: sh -c "cp /crontab /etc/crontabs/root && crond -f -l 8"
 
   hub-api:
     image: postgrest/postgrest:v12.2.3
