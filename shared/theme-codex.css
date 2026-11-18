@@ -1,0 +1,60 @@
+/* Codex (La Montre) : palette nuit du Monde des Rêves, accent or laiton.
+   Fraunces pour les titres, Inter pour le texte. Sombre par défaut, clair avec data-mode="clair". */
+
+:root {
+  --font: 'Inter', system-ui, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-lecture: 'Fraunces', Georgia, serif;
+  --titre-graisse: 600;
+  --titre-espacement: -0.01em;
+
+  --bg: #0B0D1A;
+  --sidebar: #10132A;
+  --surface: #141832;
+  --surface-2: #1A1E3A;
+  --surface-3: #212650;
+  --border: #272C58;
+  --border-strong: #343A72;
+  --text: #EAE7F6;
+  --text-2: #A9ACD2;
+  --text-3: #8E92C0;
+
+  --accent: #C9A24B;
+  --accent-text: #E8CB84;
+  --accent-bg: #2A2414;
+  --on-accent: #1A1408;
+
+  /* les deux magies primales */
+  --stellaire: #F4C95D;
+  --stellaire-bg: #2C2612;
+  --vide: #C0A0EE;
+  --vide-bg: #241B3A;
+
+  --nav-actif-fond: var(--accent-bg);
+  --nav-actif-ombre: none;
+  --champ-fond: var(--bg);
+  --badge-fond: var(--surface-3);
+}
+
+[data-mode="clair"] {
+  --bg: #F6F1E4;
+  --sidebar: #EFE8D6;
+  --surface: #FFFDF7;
+  --surface-2: #F7F1E2;
+  --surface-3: #EDE4CE;
+  --border: #E2D7BC;
+  --border-strong: #D4C7A6;
+  --text: #221D2E;
+  --text-2: #554C62;
+  --text-3: #685F74;
+
+  --accent: #8A6A1F;
+  --accent-text: #74571A;
+  --accent-bg: #F3E7C6;
+  --on-accent: #FFFFFF;
+
+  --stellaire: #7A5C0F;
+  --stellaire-bg: #F5EACB;
+  --vide: #6B3FAE;
+  --vide-bg: #EEE5FA;
+}
