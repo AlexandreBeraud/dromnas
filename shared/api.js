@@ -136,7 +136,9 @@ export function creerApi({ base = '/api', schema = 'v2', delai: delaiDefaut = 15
         window.dispatchEvent(new CustomEvent('session-expiree'));
         throw new ApiError('Ta session a expiré, reconnecte-toi.', 401, err.code);
       }
-      throw new ApiError(MESSAGES[err.code] || err.message || `Erreur ${rep.status}`, rep.status, err.code);
+      // message brut de Postgres (« violates … ») : dit simplement ; message écrit par une fonction de l'appli : tel quel
+      const brut = !err.message || /violates|violate/i.test(err.message);
+      throw new ApiError((brut && MESSAGES[err.code]) || err.message || MESSAGES[err.code] || `Erreur ${rep.status}`, rep.status, err.code);
     }
 
     const texte = rep.status === 204 || methode === 'HEAD' ? '' : await rep.text();
