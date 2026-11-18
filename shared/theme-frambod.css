@@ -1,0 +1,22 @@
+/* Framboð : palette commune (tokens.css), accent violet, IBM Plex.
+   Sombre par défaut, clair avec data-mode="clair". */
+
+:root {
+  --font: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-display: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --titre-graisse: 600;
+  --titre-espacement: -0.3px;
+
+  --accent: #9B87F5;
+  --accent-text: #B7A9F8;
+  --accent-bg: #231D3A;
+  --on-accent: #140F26;
+}
+
+[data-mode="clair"] {
+  --accent: #6A52D6;
+  --accent-text: #5A43C2;
+  --accent-bg: #ECE8FD;
+  --on-accent: #FFFFFF;
+}

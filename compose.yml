@@ -183,7 +183,7 @@ services:
     restart: unless-stopped
     environment:
       PGRST_DB_URI: postgres://frambod_api:${FRAMBOD_DB_PASSWORD}@db:5432/frambod
-      PGRST_DB_SCHEMAS: public
+      PGRST_DB_SCHEMAS: public,v2
       PGRST_DB_ANON_ROLE: frambod_anon
     depends_on:
       db:
