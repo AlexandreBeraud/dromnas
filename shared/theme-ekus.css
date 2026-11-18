@@ -1,0 +1,280 @@
+/* Ekus : 7 thèmes en clair et en sombre (data-theme + data-mode sur <html>).
+   Couleurs reprises de l'ancienne appli ; les gris et les accents sont ajustés
+   pour rester lisibles (contraste 4,5:1 sur les fonds). */
+
+:root {
+  --font: 'DM Sans', system-ui, sans-serif;
+  --font-display: Fraunces, Georgia, serif;
+  --titre-graisse: 600;
+  --titre-espacement: -0.3px;
+}
+
+/* Terracotta sombre : thème par défaut, valeurs des maquettes */
+:root,
+[data-theme="terracotta"][data-mode="sombre"] {
+  --bg: #1D1510;
+  --sidebar: #251B12;
+  --surface: #2C1E16;
+  --surface-2: #251B12;
+  --border: #3E2A1E;
+  --border-soft: #3A281D;
+  --text: #F5EAE0;
+  --text-2: #C8B0A0;
+  --text-3: #A8968A;
+  --accent: #D4785C;
+  --accent-text: #EC9A80;
+  --accent-bg: #4A2619;
+  --on-accent: #1D1510;
+  --second: #9DBC8D;
+  --ok: #9DBC8D;
+  --ok-bg: #1F3019;
+  --warn: #E8CC8A;
+  --warn-bg: #3A2C10;
+  --danger: #F5A48C;
+  --danger-bg: #4A2619;
+  --scrim: rgba(0, 0, 0, 0.62);
+  --shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+[data-mode="clair"] {
+  --ok: #3B6A2E;
+  --ok-bg: #DDE8D3;
+  --warn: #7A5200;
+  --warn-bg: #F6E7C4;
+  --danger: #A3392A;
+  --danger-bg: #F7DDD5;
+  --scrim: rgba(42, 33, 27, 0.45);
+  --shadow: 0 12px 28px rgba(42, 33, 27, 0.18);
+  color-scheme: light;
+}
+
+/* Terracotta */
+[data-theme="terracotta"][data-mode="clair"] {
+  --bg: #FBF6EE;
+  --sidebar: #F4ECDF;
+  --surface: #FFFFFF;
+  --surface-2: #F4ECDF;
+  --border: #E8DECF;
+  --border-soft: #F0E6D7;
+  --text: #2A211B;
+  --text-2: #574A40;
+  --text-3: #6F6358;
+  --accent: #A8513A;
+  --accent-text: #984934;
+  --accent-bg: #F2D7CC;
+  --on-accent: #FFFFFF;
+  --second: #5A6C4C;
+}
+
+/* Océan */
+[data-theme="ocean"][data-mode="clair"] {
+  --bg: #F0F6FA;
+  --sidebar: #E0EDF5;
+  --surface: #FFFFFF;
+  --surface-2: #E0EDF5;
+  --border: #C8DCEA;
+  --border-soft: #E0EDF5;
+  --text: #1A2B35;
+  --text-2: #3A5566;
+  --text-3: #49697C;
+  --accent: #1A6B8E;
+  --accent-text: #186585;
+  --accent-bg: #C5E0EE;
+  --on-accent: #FFFFFF;
+  --second: #1F736B;
+}
+[data-theme="ocean"][data-mode="sombre"] {
+  --bg: #0E1825;
+  --sidebar: #131F30;
+  --surface: #182638;
+  --surface-2: #131F30;
+  --border: #1E3048;
+  --border-soft: #162538;
+  --text: #E0EDF8;
+  --text-2: #9ABDD0;
+  --text-3: #5F95AF;
+  --accent: #3A9AC0;
+  --accent-text: #57ABCC;
+  --accent-bg: #1A3040;
+  --on-accent: #0E1825;
+  --second: #4FD0C8;
+}
+
+/* Forêt */
+[data-theme="foret"][data-mode="clair"] {
+  --bg: #F2F0EA;
+  --sidebar: #E8E2D6;
+  --surface: #FFFFFF;
+  --surface-2: #E8E2D6;
+  --border: #D0CCC0;
+  --border-soft: #E5E0D6;
+  --text: #1E2B1A;
+  --text-2: #485940;
+  --text-3: #5D6752;
+  --accent: #3E5837;
+  --accent-text: #3E5837;
+  --accent-bg: #D1E0CC;
+  --on-accent: #FFFFFF;
+  --second: #6B5340;
+}
+[data-theme="foret"][data-mode="sombre"] {
+  --bg: #101508;
+  --sidebar: #161C0C;
+  --surface: #1C2410;
+  --surface-2: #161C0C;
+  --border: #202E14;
+  --border-soft: #18240E;
+  --text: #E0EDD8;
+  --text-2: #A0B890;
+  --text-3: #71965C;
+  --accent: #70A060;
+  --accent-text: #87AF7A;
+  --accent-bg: #1A2E10;
+  --on-accent: #101508;
+  --second: #A08860;
+}
+
+/* Lavande */
+[data-theme="lavande"][data-mode="clair"] {
+  --bg: #F5F2FA;
+  --sidebar: #EDE8F5;
+  --surface: #FFFFFF;
+  --surface-2: #EDE8F5;
+  --border: #DDD6F0;
+  --border-soft: #EDE8F5;
+  --text: #2A2035;
+  --text-2: #574A6E;
+  --text-3: #725F85;
+  --accent: #5D4F82;
+  --accent-text: #5D4F82;
+  --accent-bg: #E2DCF0;
+  --on-accent: #FFFFFF;
+  --second: #7A6542;
+}
+[data-theme="lavande"][data-mode="sombre"] {
+  --bg: #120E20;
+  --sidebar: #181428;
+  --surface: #201830;
+  --surface-2: #181428;
+  --border: #2A2240;
+  --border-soft: #201A32;
+  --text: #EAE5F8;
+  --text-2: #B8B0D0;
+  --text-3: #89839F;
+  --accent: #9080C0;
+  --accent-text: #A89BCE;
+  --accent-bg: #2A2040;
+  --on-accent: #120E20;
+  --second: #C8B090;
+}
+
+/* Rose */
+[data-theme="rose"][data-mode="clair"] {
+  --bg: #FBF0F2;
+  --sidebar: #F5E0E5;
+  --surface: #FFFFFF;
+  --surface-2: #F5E0E5;
+  --border: #ECCDD4;
+  --border-soft: #F5E0E5;
+  --text: #2A1A20;
+  --text-2: #6A3A4A;
+  --text-3: #855967;
+  --accent: #B04060;
+  --accent-text: #A23A58;
+  --accent-bg: #F9D6DC;
+  --on-accent: #FFFFFF;
+  --second: #6B5080;
+}
+[data-theme="rose"][data-mode="sombre"] {
+  --bg: #1A0E14;
+  --sidebar: #22141C;
+  --surface: #2C1A24;
+  --surface-2: #22141C;
+  --border: #402030;
+  --border-soft: #301828;
+  --text: #F8E8F0;
+  --text-2: #C8A8B8;
+  --text-3: #9F8391;
+  --accent: #E07090;
+  --accent-text: #E792AA;
+  --accent-bg: #401828;
+  --on-accent: #1A0E14;
+  --second: #A080B0;
+}
+
+/* Désert */
+[data-theme="desert"][data-mode="clair"] {
+  --bg: #F5F0E8;
+  --sidebar: #EDE5D0;
+  --surface: #FFFFFF;
+  --surface-2: #EDE5D0;
+  --border: #D8C8A0;
+  --border-soft: #EDE5D0;
+  --text: #2A200A;
+  --text-2: #5A4020;
+  --text-3: #766248;
+  --accent: #97641E;
+  --accent-text: #85581A;
+  --accent-bg: #F0DEC0;
+  --on-accent: #FFFFFF;
+  --second: #506E42;
+}
+[data-theme="desert"][data-mode="sombre"] {
+  --bg: #181208;
+  --sidebar: #20180C;
+  --surface: #281E10;
+  --surface-2: #20180C;
+  --border: #3A2C10;
+  --border-soft: #2C220C;
+  --text: #F8F0E0;
+  --text-2: #C8B890;
+  --text-3: #9D8A54;
+  --accent: #D4983A;
+  --accent-text: #DBAA5B;
+  --accent-bg: #3A2808;
+  --on-accent: #181208;
+  --second: #90A870;
+}
+
+/* Ardoise */
+[data-theme="ardoise"][data-mode="clair"] {
+  --bg: #EFF2F8;
+  --sidebar: #E0E6F2;
+  --surface: #FFFFFF;
+  --surface-2: #E0E6F2;
+  --border: #C4CEDF;
+  --border-soft: #DDE3EE;
+  --text: #1A202C;
+  --text-2: #3A4560;
+  --text-3: #556275;
+  --accent: #2E508A;
+  --accent-text: #2E508A;
+  --accent-bg: #C8D4EB;
+  --on-accent: #FFFFFF;
+  --second: #3A6A5A;
+}
+[data-theme="ardoise"][data-mode="sombre"] {
+  --bg: #0E1222;
+  --sidebar: #141830;
+  --surface: #1A2038;
+  --surface-2: #141830;
+  --border: #1E2A42;
+  --border-soft: #162030;
+  --text: #E0EAF8;
+  --text-2: #9AB0D0;
+  --text-3: #7590B4;
+  --accent: #5A84C0;
+  --accent-text: #789ACB;
+  --accent-bg: #182040;
+  --on-accent: #0E1222;
+  --second: #70A898;
+}
+
+/* Pastille de chaque profil, la même dans tous les thèmes */
+[data-couleur="terracotta"] { --pastille: #D4785C; }
+[data-couleur="ardoise"] { --pastille: #8FA0B2; }
+[data-couleur="sauge"] { --pastille: #9DBC8D; }
+[data-couleur="ocre"] { --pastille: #D4B06A; }
+[data-couleur="lavande"] { --pastille: #A898D0; }
+[data-couleur="rose"] { --pastille: #E0A0B4; }

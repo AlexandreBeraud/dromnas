@@ -1,0 +1,114 @@
+/* Variables communes à toutes les applis DrömNAS.
+   theme-<appli>.css, chargé après, pose les couleurs et les polices de l'appli.
+   Les noms des variables restent ceux de PTCG et d'Ekus (--bg, --surface…). */
+
+/* Palette par défaut : sombre, reprise du thème Braise de PTCG */
+:root {
+  --bg: #0E1016;
+  --sidebar: #12151C;
+  --surface: #161A22;
+  --surface-2: #1A1F2A;
+  --surface-3: #1D2230;
+  --border: #232938;
+  --border-strong: #2A3142;
+  --text: #ECEEF3;
+  --text-2: #A3ACBE;
+  --text-3: #8C95A8;
+  --accent: #8C95A8;
+  --accent-text: #C9CFDB;
+  --accent-bg: #1D2230;
+  --on-accent: #0E1016;
+  --ok: #3DD68C;
+  --ok-bg: #15291F;
+  --warn: #F2C14E;
+  --warn-bg: #2B2416;
+  --info: #7CC0FF;
+  --info-bg: #13283A;
+  --danger: #FF8A87;
+  --danger-bg: #2A1719;
+  --scrim: rgba(7, 8, 11, 0.78);
+  --shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+/* Clair en option, repris du thème Aurore de PTCG */
+[data-mode="clair"] {
+  --bg: #F4F1EA;
+  --sidebar: #ECE7DB;
+  --surface: #FFFFFF;
+  --surface-2: #F7F4EE;
+  --surface-3: #ECE7DB;
+  --border: #E4DCCB;
+  --border-strong: #DDD4C0;
+  --text: #241F1A;
+  --text-2: #5E5546;
+  --text-3: #6C6252;
+  --accent: #6C6252;
+  --accent-text: #3D362D;
+  --accent-bg: #ECE7DB;
+  --on-accent: #FFFFFF;
+  --ok: #15803D;
+  --ok-bg: #DCF3E4;
+  --warn: #A16207;
+  --warn-bg: #FBF0D5;
+  --info: #1D4ED8;
+  --info-bg: #E0E9FB;
+  --danger: #B91C1C;
+  --danger-bg: #FBE3E3;
+  --scrim: rgba(36, 31, 26, 0.45);
+  --shadow: 0 12px 28px rgba(36, 31, 26, 0.18);
+  color-scheme: light;
+}
+
+/* Variables qu'un thème peut ne pas poser : elles retombent sur les autres */
+:root {
+  --border-soft: var(--border);
+  --nav-text: var(--text-2);
+  --second: var(--ok);
+
+  /* polices */
+  --font: system-ui, sans-serif;
+  --font-display: var(--font);
+  --titre-graisse: 700;
+  --titre-espacement: -0.4px;
+
+  /* rayons (réglables : data-rayon sur <html>) */
+  --radius-sm: 0.5rem;
+  --radius: 0.625rem;
+  --radius-champ: 0.75rem;
+  --radius-lg: 0.875rem;
+  --radius-modale: 1.125rem;
+
+  /* fonds et traits des composants : un thème peut les changer sans toucher au reste */
+  --btn-fond: var(--surface);
+  --champ-fond: var(--surface);
+  --trait: var(--border);
+  --toast-fond: var(--surface);
+  --badge-fond: var(--surface-2);
+  --nav-actif-fond: var(--surface);
+  --nav-actif-ombre: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --ombre-legere: 0 1px 2px rgba(0, 0, 0, 0.25);
+
+  /* largeur maximale du contenu ; none pour toute la largeur */
+  --page-max: 75rem;
+}
+
+[data-rayon="angulaire"] {
+  --radius-sm: 0.1875rem;
+  --radius: 0.25rem;
+  --radius-champ: 0.3125rem;
+  --radius-lg: 0.375rem;
+  --radius-modale: 0.5rem;
+}
+[data-rayon="arrondi"] {
+  --radius-sm: 0.625rem;
+  --radius: 0.875rem;
+  --radius-champ: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-modale: 1.5rem;
+}
+
+/* Taille du texte : tout le kit est en rem */
+html { font-size: 100%; }
+html[data-taille="petite"] { font-size: 93.75%; }
+html[data-taille="grande"] { font-size: 109.375%; }

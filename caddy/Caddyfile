@@ -2,11 +2,16 @@
 	acme_dns cloudflare {env.CF_API_TOKEN}
 }
 
-# /api vers le PostgREST de l'appli, le reste vers son site
+# /api vers le PostgREST de l'appli, /_shared vers le kit commun, le reste vers son site
 (app) {
 	encode gzip
 	handle_path /api/* {
 		reverse_proxy {args[0]}-api:3000
+	}
+	handle_path /_shared/* {
+		root * /srv-shared
+		header Cache-Control "no-cache"
+		file_server
 	}
 	handle {
 		root * /srv/{args[0]}
