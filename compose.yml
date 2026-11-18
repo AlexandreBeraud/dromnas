@@ -178,6 +178,19 @@ services:
       - /volume1/applis/daglega:/data
     command: node /app/server.js
 
+  codex-api:
+    image: postgrest/postgrest:v12.2.3
+    container_name: codex-api
+    restart: unless-stopped
+    environment:
+      PGRST_DB_URI: postgres://codex_api:${CODEX_DB_PASSWORD}@db:5432/codex
+      PGRST_DB_SCHEMAS: v2
+      PGRST_DB_ANON_ROLE: codex_anon
+      PGRST_JWT_SECRET: ${CODEX_JWT_SECRET}
+    depends_on:
+      db:
+        condition: service_healthy
+
   frambod-api:
     image: postgrest/postgrest:v12.2.3
     container_name: frambod-api

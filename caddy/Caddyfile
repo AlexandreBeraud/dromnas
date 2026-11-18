@@ -92,16 +92,12 @@ signal.dromnas.win {
 }
 
 codex.dromnas.win {
-	encode gzip
-	# pas d'API pour le Codex (lecture seule jusqu'au lot 3)
-	handle_path /_shared/* {
-		root * /srv-shared
-		header Cache-Control "no-cache"
-		file_server
+	# le dépôt est servi depuis sa racine : on cache les scripts SQL et .git
+	handle /db/* {
+		respond 404
 	}
-	handle {
-		root * /srv/codex
-		header Cache-Control "no-cache"
-		file_server
+	handle /.git/* {
+		respond 404
 	}
+	import app codex
 }
