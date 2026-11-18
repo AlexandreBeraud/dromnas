@@ -47,6 +47,12 @@ ptcg.dromnas.win {
 }
 
 hub.dromnas.win {
+	# relevé du NAS écrit par le conteneur cron (backup/etat.sh)
+	handle /etat.json {
+		root * /srv-etat
+		header Cache-Control "no-store"
+		file_server
+	}
 	import app hub
 }
 

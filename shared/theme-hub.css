@@ -1,0 +1,23 @@
+/* Hub : palette commune (Braise de PTCG), Inter, accent rouge PTCG.
+   Une seule page, sans menu latéral. */
+
+:root {
+  --font: 'Inter', system-ui, sans-serif;
+  --font-display: 'Inter', system-ui, sans-serif;
+  --titre-graisse: 800;
+  --titre-espacement: -0.02em;
+
+  --accent: #FF5E5B;
+  --accent-text: #FF8A87;
+  --accent-bg: #2A1719;
+  --on-accent: #1A0B0B;
+  --or: #FFD166;
+
+  --btn-fond: var(--surface-3);
+  --champ-fond: var(--bg);
+  --trait: var(--border-strong);
+  --toast-fond: var(--surface-3);
+  --badge-fond: var(--surface-3);
+
+  --page-max: none;
+}

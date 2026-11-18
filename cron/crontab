@@ -6,3 +6,5 @@
 0 4 * * * /backup/maxtor.sh 2>> /volume1/backup/maxtor.log
 # Ekus : écritures du jour des échéances et des crédits (avant le dump de 2 h 30)
 10 2 * * * docker exec db psql -U drom -d ekus -v ON_ERROR_STOP=1 -Atc "select now(), v2.creer_ecritures()" >> /volume1/backup/ekus/jobs.log 2>&1
+# état du NAS pour le Hub (hub.dromnas.win/etat.json)
+*/15 * * * * sh /backup/etat.sh 2>> /volume1/backup/etat.log
