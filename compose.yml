@@ -51,7 +51,7 @@ services:
         bind:
           propagation: rslave
     # 2 h 30 : juste avant les instantanés de 3 h
-    command: sh -c "apk add --no-cache bash rsync >/dev/null; cp /crontab /etc/crontabs/root && crond -f -l 8"
+    command: sh -c "apk add --no-cache bash rsync curl >/dev/null; cp /crontab /etc/crontabs/root && crond -f -l 8"
 
   # carte réseau Tailscale de Caddy : son propre 443, sans gêner le nginx d'UGOS
   ts-web:
