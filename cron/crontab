@@ -10,3 +10,5 @@
 */15 * * * * sh /backup/etat.sh 2>> /volume1/backup/etat.log
 # Codex : plan de La Montre relu dans Google Docs
 10 3 * * * mkdir -p /volume1/backup/codex && sh /volume1/docker/repos/codex/jobs/lire_docs.sh >> /volume1/backup/codex/docs.log 2>&1
+# Signal : nouvelles écoutes Last.fm, puis compléments (MusicBrainz, Deezer, Last.fm)
+*/15 * * * * mkdir -p /volume1/backup/signal && sh /volume1/docker/repos/signal/jobs/lastfm.sh >> /volume1/backup/signal/jobs.log 2>&1; sh /volume1/docker/repos/signal/jobs/completer.sh >> /volume1/backup/signal/jobs.log 2>&1
