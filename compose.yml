@@ -37,6 +37,9 @@ services:
     restart: unless-stopped
     environment:
       TZ: CET-1CEST,M3.5.0,M10.5.0/3
+      # lecture de Last.fm pour Signal (jobs/lastfm.sh)
+      LASTFM_API_KEY: ${LASTFM_API_KEY:-}
+      LASTFM_USERNAME: ${LASTFM_USERNAME:-}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./backup:/backup:ro
@@ -199,6 +202,18 @@ services:
       PGRST_DB_URI: postgres://frambod_api:${FRAMBOD_DB_PASSWORD}@db:5432/frambod
       PGRST_DB_SCHEMAS: public,v2
       PGRST_DB_ANON_ROLE: frambod_anon
+    depends_on:
+      db:
+        condition: service_healthy
+
+  signal-api:
+    image: postgrest/postgrest:v12.2.3
+    container_name: signal-api
+    restart: unless-stopped
+    environment:
+      PGRST_DB_URI: postgres://signal_api:${SIGNAL_DB_PASSWORD}@db:5432/signal
+      PGRST_DB_SCHEMAS: v2
+      PGRST_DB_ANON_ROLE: signal_anon
     depends_on:
       db:
         condition: service_healthy
