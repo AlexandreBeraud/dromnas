@@ -1,0 +1,34 @@
+/* Signal : palette commune (tokens.css), ambre et sarcelle, Space Grotesk + Inter.
+   Sombre par défaut, clair avec data-mode="clair". */
+
+:root {
+  --font: 'Inter', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --titre-graisse: 700;
+  --titre-espacement: -0.6px;
+
+  --bg: #0C0D12;
+  --sidebar: #101118;
+  --surface: #15161F;
+  --surface-2: #1B1D28;
+  --surface-3: #222433;
+  --border: #252838;
+  --border-strong: #2E3245;
+
+  --accent: #E8A33D;
+  --accent-text: #F2BE6B;
+  --accent-bg: #2A2114;
+  --on-accent: #1A1206;
+  --second: #4FD1C5;
+  --second-bg: #12282A;
+}
+
+[data-mode="clair"] {
+  --accent: #B8741A;
+  --accent-text: #8F5810;
+  --accent-bg: #FBEBD3;
+  --on-accent: #FFFFFF;
+  --second: #0F7C73;
+  --second-bg: #D9F2EF;
+}

@@ -90,6 +90,7 @@ services:
       - /volume1/docker/repos/daglega/site:/srv/daglega:ro
       - /volume1/docker/repos/codex:/srv/codex:ro
       - /volume1/docker/repos/frambod/site:/srv/frambod:ro
+      - /volume1/docker/repos/signal/site:/srv/signal:ro
     depends_on:
       - ts-web
 

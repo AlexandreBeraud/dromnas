@@ -91,6 +91,16 @@ signal.dromnas.win {
 	reverse_proxy signal-web:8080
 }
 
+# Signal v2, à côté de l'ancien jusqu'à la bascule ; les job_* ne sont appelés que par le cron
+signal-v2.dromnas.win {
+	handle /api/rpc/job_* {
+		respond 404
+	}
+	handle {
+		import app signal
+	}
+}
+
 codex.dromnas.win {
 	# le dépôt est servi depuis sa racine : on cache les scripts SQL et .git
 	handle /db/* {
