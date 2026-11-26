@@ -86,19 +86,19 @@ frambod.dromnas.win {
 	import app frambod
 }
 
+# les job_* ne sont appelés que par le cron, par le réseau Docker
 signal.dromnas.win {
-	encode gzip
-	reverse_proxy signal-web:8080
-}
-
-# Signal v2, à côté de l'ancien jusqu'à la bascule ; les job_* ne sont appelés que par le cron
-signal-v2.dromnas.win {
 	handle /api/rpc/job_* {
 		respond 404
 	}
 	handle {
 		import app signal
 	}
+}
+
+# adresse de la v2 pendant la refonte, gardée pour les favoris
+signal-v2.dromnas.win {
+	redir https://signal.dromnas.win{uri}
 }
 
 codex.dromnas.win {
