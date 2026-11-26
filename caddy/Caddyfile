@@ -96,11 +96,6 @@ signal.dromnas.win {
 	}
 }
 
-# adresse de la v2 pendant la refonte, gardée pour les favoris
-signal-v2.dromnas.win {
-	redir https://signal.dromnas.win{uri}
-}
-
 codex.dromnas.win {
 	# le dépôt est servi depuis sa racine : on cache les scripts SQL et .git
 	handle /db/* {
