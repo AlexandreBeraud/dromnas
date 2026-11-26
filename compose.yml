@@ -102,7 +102,8 @@ services:
     restart: unless-stopped
     environment:
       DOMAIN: https://vault.dromnas.win
-      # ouvert le temps de créer ton compte, refermé juste après
+      # inscriptions fermées ; page d'admin désactivée tant qu'il n'y a pas d'ADMIN_TOKEN
+      # (ne jamais mettre DISABLE_ADMIN_TOKEN : il ouvre /admin sans mot de passe)
       SIGNUPS_ALLOWED: "false"
       TZ: Europe/Paris
     volumes:
