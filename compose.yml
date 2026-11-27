@@ -69,6 +69,10 @@ services:
       - ./tailscale-web:/var/lib/tailscale
     ports:
       - "8086:8086"
+    # second réseau : le seul que cloudflared voit
+    networks:
+      - default
+      - famille
 
   caddy:
     build: ./caddy
@@ -91,6 +95,20 @@ services:
       - /volume1/docker/repos/codex:/srv/codex:ro
       - /volume1/docker/repos/frambod/site:/srv/frambod:ro
       - /volume1/docker/repos/signal/site:/srv/signal:ro
+    depends_on:
+      - ts-web
+
+  # accès famille : Cloudflare Tunnel vers Caddy, pour ekus et ptcg seulement
+  # (adresses et Access réglés dans le tableau de bord Cloudflare)
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN}
+    networks:
+      - famille
     depends_on:
       - ts-web
 
@@ -219,3 +237,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+networks:
+  # ts-web (donc Caddy) et cloudflared, rien d'autre
+  famille:
