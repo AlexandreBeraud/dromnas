@@ -382,25 +382,28 @@ textarea.input { padding-top: 0.75rem; padding-bottom: 0.75rem; }
   background: var(--scrim);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 2.5rem 1rem;
-  overflow-y: auto;
   z-index: 50;
 }
+/* la fenêtre ne dépasse jamais l'écran : titre et boutons restent visibles, le milieu défile */
 .modale {
   width: 100%;
   max-width: var(--modale-l, 38.75rem);
+  max-height: 100%;
   background: var(--surface);
   border-radius: var(--radius-modale);
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 .modale-etroite { --modale-l: 28rem; }
 .modale-large { --modale-l: 52rem; }
 .modale-tete { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-soft); }
 .modale-tete h2 { margin: 0; font-family: var(--font-display); font-size: 1.5rem; font-weight: var(--titre-graisse); }
-.modale-corps { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1.125rem; }
+.modale-tete, .modale-pied, .modale-erreur { flex: none; }
+.modale-corps { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1.125rem; }
 .modale-corps > p { margin: 0; }
 .modale-erreur { margin: 0 1.5rem 1rem; padding: 0.875rem 1rem; border-radius: var(--radius-champ); background: var(--danger-bg); color: var(--danger); font-size: 0.85rem; }
 .modale-pied { display: flex; gap: 0.625rem; justify-content: flex-end; flex-wrap: wrap; padding: 1rem 1.5rem; border-top: 1px solid var(--border-soft); }
@@ -434,6 +437,69 @@ textarea.input { padding-top: 0.75rem; padding-bottom: 0.75rem; }
 .toast-texte { flex: 1; }
 .toast button { background: transparent; border: 1px solid currentColor; border-radius: var(--radius-sm); min-height: 2.25rem; padding: 0 0.625rem; cursor: pointer; }
 .toast .toast-fermer { border: 0; width: 2.75rem; min-height: 2.75rem; display: grid; place-items: center; color: var(--text-2); }
+
+/* ── Effets (ui/effets.js) ─────────────────────────────────────────────
+   data-effets sur <html> : « tous », « doux » (fondus seulement, pas de boucles), « aucun ». */
+:root { --ease-out: cubic-bezier(.16, 1, .3, 1); --ease-io: cubic-bezier(.65, 0, .35, 1); }
+:root[data-effets="aucun"] *,
+:root[data-effets="aucun"] *::before,
+:root[data-effets="aucun"] *::after { animation: none !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+
+.avant-apparition { opacity: 0; }
+
+@keyframes fondu-entre { from { opacity: 0; } }
+@keyframes modale-entre { from { opacity: 0; translate: 0 10px; scale: .985; } }
+@keyframes modale-monte { from { translate: 0 100%; } }
+.modale-fond { animation: fondu-entre .2s ease-out; }
+:root[data-effets="tous"] .modale { animation: modale-entre .32s var(--ease-out); }
+:root[data-effets="doux"] .modale { animation: fondu-entre .2s ease-out; }
+
+/* pastille glissante sous l'élément choisi d'un groupe */
+.segmente, .chips { position: relative; }
+.glisse { position: absolute; left: 0; top: 0; z-index: 0; pointer-events: none; transition: translate .32s var(--ease-io), width .32s var(--ease-io), height .32s var(--ease-io); }
+:root[data-effets="doux"] .glisse { transition: none; }
+.segmente > .glisse { border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--ombre-legere); }
+.chips > .glisse { border-radius: 999px; border: 1px solid var(--accent); background: var(--accent-bg); }
+.segmente > :not(.glisse), .chips > :not(.glisse) { position: relative; z-index: 1; }
+.segmente.a-glisse > [aria-pressed="true"], .segmente.a-glisse > [aria-selected="true"] { background: transparent; box-shadow: none; }
+.chips.a-glisse > .chip[aria-pressed="true"] { background: transparent; border-color: transparent; }
+
+/* bouton « remonter » : l'anneau se remplit avec le défilement */
+@property --p { syntax: '<number>'; inherits: false; initial-value: 0; }
+.remonter {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 25;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(var(--accent) calc(var(--p) * 360deg), var(--border) 0);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  opacity: 0;
+  translate: 0 14px;
+  pointer-events: none;
+  transition: opacity .3s var(--ease-out), translate .3s var(--ease-out);
+}
+.remonter::before { content: ''; grid-area: 1 / 1; width: calc(100% - 6px); aspect-ratio: 1; border-radius: 50%; background: var(--surface); }
+.remonter-fleche { grid-area: 1 / 1; width: .55rem; height: .55rem; border-left: 2px solid var(--text); border-top: 2px solid var(--text); rotate: 45deg; translate: 0 2px; }
+.remonter.visible { opacity: 1; translate: 0 0; pointer-events: auto; }
+.modale-ouverte .remonter { display: none; }
+
+/* paillettes */
+.paillette { position: absolute; z-index: 3; pointer-events: none; background: #E3B24A; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
+.paillette.rond { clip-path: none; border-radius: 50%; background: #F3DC98; }
+
+/* point qui respire : un rappel qui attend */
+@keyframes respire { 0% { opacity: .8; scale: 1; } 100% { opacity: 0; scale: 2.6; } }
+.respire { position: relative; }
+.respire::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: inherit; opacity: 0; }
+:root[data-effets="tous"] .respire::after { animation: respire 1.8s ease-out infinite; }
 
 
 @media (max-width: 860px) {
@@ -487,9 +553,25 @@ textarea.input { padding-top: 0.75rem; padding-bottom: 0.75rem; }
   .filtres-resume { margin-left: 0; width: 100%; }
   .recherche { max-width: none; }
   /* modale en bas de l'écran, plus facile à atteindre au pouce */
-  .modale-fond { align-items: flex-end; padding: 2rem 0 0; }
+  .modale-fond { align-items: flex-end; padding: 0.75rem 0 0; }
   .modale { max-width: none; border-radius: var(--radius-modale) var(--radius-modale) 0 0; }
-  .modale-tete, .modale-corps, .modale-pied { padding-left: 1rem; padding-right: 1rem; }
-  .modale-pied { padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
-  .modale-pied .btn { flex: 1; }
+  .modale-tete { padding: 0.875rem 0.75rem 0.875rem 1rem; }
+  .modale-tete h2 { font-size: 1.25rem; }
+  .modale-corps { padding: 1rem; gap: 1rem; }
+  .modale-erreur { margin: 0 1rem 0.75rem; }
+  .modale-pied { padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom)); flex-wrap: nowrap; }
+  .modale-pied .btn { flex: 1; min-width: 0; padding: 0 0.5rem; }
+  :root[data-effets="tous"] .modale { animation: modale-monte .36s var(--ease-out); }
+  .remonter { right: 1rem; bottom: calc(5.75rem + env(safe-area-inset-bottom)); width: 2.75rem; height: 2.75rem; }
+
+  /* 16 px au moins : en dessous, le téléphone zoome sur le champ touché */
+  .input, .select-filtre select, .recherche input { font-size: max(1rem, 16px); }
+
+  /* en-tête de page : les boutons se partagent la largeur */
+  .page-actions { width: 100%; }
+  .page-actions > .btn { flex: 1 1 auto; }
+  /* filtres : deux par ligne, de la même largeur */
+  .filtres-ligne > .recherche { flex-basis: 100%; }
+  .filtres-ligne > .select-filtre { flex: 1 1 calc(50% - 0.3125rem); min-width: 0; }
+  .select-filtre select { width: 100%; min-width: 0; text-overflow: ellipsis; }
 }

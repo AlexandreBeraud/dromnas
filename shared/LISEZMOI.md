@@ -44,12 +44,13 @@ Icônes du menu : `ajouterIcones({ nom: 'tracé SVG 24×24' })` une fois, puis `
 | `drom.css` | Menu latéral, barre du bas, en-têtes de page, boutons, panneaux, champs, filtres, pastilles, badges, listes, états vides, modales, toasts |
 | `theme-<appli>.css` | Couleurs, polices et réglages propres à l'appli |
 | `api.js` | `creerApi()` : `lire`, `un`, `page`, `compter`, `ajouter`, `ajouterLot`, `enregistrer`, `modifier`, `supprimer`, `appeler`, `connexion` |
-| `apparence.js` | `preparerApparence()` : thème, clair/sombre/auto, taille du texte, rayons, accent libre |
+| `apparence.js` | `preparerApparence()` : thème, clair/sombre/auto, taille du texte, rayons, accent libre, animations |
 | `ui/dom.js` | `html`, `brut`, `esc`, `setHtml`, `$`, `$$`, `on`, `differer`, `majuscule`, `chargerSuite`, `uid`, `rechargerPage`, `etatErreur` |
 | `ui/modale.js` | `ouvrirModale`, `confirmer` |
 | `ui/notifications.js` | `notifier`, `notifierErreur` |
 | `ui/icones.js` | `icone`, `ajouterIcones` |
 | `ui/pastilles.js` | `pastilles` (groupe de filtres) |
+| `ui/effets.js` | `suivreGroupes`, `apparition`, `boutonRemonter`, `gerbe` ; réglés par `data-effets` (`tous`, `doux`, `aucun`) posé par `apparence.js` |
 
 Événements sur `window` : `nas-statut` (`detail.ok`) quand le NAS tombe ou revient,
 `session-expiree` quand un jeton est refusé.

@@ -32,9 +32,24 @@ export function ouvrirModale({ titre, corps = '', actions = [], taille = '', lar
   const erreur = fond.querySelector('.modale-erreur');
   if (largeur) modale.style.setProperty('--modale-l', `${largeur / 16}rem`);
 
+  // clavier du téléphone ouvert : la fenêtre se cale sur la partie encore visible de l'écran
+  const vue = window.visualViewport;
+  const suivreVue = () => {
+    fond.style.top = `${vue.offsetTop}px`;
+    fond.style.height = `${vue.height}px`;
+  };
+  if (vue) {
+    vue.addEventListener('resize', suivreVue);
+    vue.addEventListener('scroll', suivreVue);
+    suivreVue();
+  }
+
   function fermer() {
     if (!fond.isConnected) return;
     fond.remove();
+    vue?.removeEventListener('resize', suivreVue);
+    vue?.removeEventListener('scroll', suivreVue);
+    window.removeEventListener('hashchange', fermer);
     document.removeEventListener('keydown', clavier);
     if (!document.querySelector('.modale-fond')) document.body.classList.remove('modale-ouverte');
     precedent?.focus?.();
@@ -63,6 +78,8 @@ export function ouvrirModale({ titre, corps = '', actions = [], taille = '', lar
     }
   });
   document.addEventListener('keydown', clavier);
+  // changer de page (lien, bouton retour du téléphone) ferme la fenêtre au lieu de la laisser par-dessus
+  window.addEventListener('hashchange', fermer);
 
   document.body.append(fond);
   document.body.classList.add('modale-ouverte');

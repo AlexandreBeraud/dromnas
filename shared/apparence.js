@@ -5,9 +5,11 @@
 //
 // luminosite : 'sombre' | 'clair' | 'auto' ; taille_texte : 'petite' | 'normale' | 'grande'
 // rayon : 'angulaire' | 'normal' | 'arrondi' ; accent : couleur libre (#RRGGBB) ou rien
+// effets : 'tous' | 'doux' | 'aucun' ; vide : « doux » si le système demande moins d'animations, sinon « tous »
 
-const BASE = { theme: '', luminosite: 'sombre', taille_texte: 'normale', rayon: 'normal', accent: '' };
+const BASE = { theme: '', luminosite: 'sombre', taille_texte: 'normale', rayon: 'normal', accent: '', effets: '' };
 const systemeSombre = matchMedia('(prefers-color-scheme: dark)');
+const systemeCalme = matchMedia('(prefers-reduced-motion: reduce)');
 
 export function preparerApparence({ cle, defaut = {} }) {
   const DEFAUT = { ...BASE, ...defaut };
@@ -23,6 +25,7 @@ export function preparerApparence({ cle, defaut = {} }) {
     racine.dataset.mode = sombre ? 'sombre' : 'clair';
     racine.dataset.taille = actuelle.taille_texte;
     racine.dataset.rayon = actuelle.rayon;
+    racine.dataset.effets = ['tous', 'doux', 'aucun'].includes(actuelle.effets) ? actuelle.effets : systemeCalme.matches ? 'doux' : 'tous';
     if (/^#[0-9a-f]{3,8}$/i.test(actuelle.accent || '')) {
       racine.style.setProperty('--accent', actuelle.accent);
       racine.style.setProperty('--accent-text', actuelle.accent);
@@ -46,6 +49,9 @@ export function preparerApparence({ cle, defaut = {} }) {
 
   systemeSombre.addEventListener('change', () => {
     if (actuelle.luminosite === 'auto') poser();
+  });
+  systemeCalme.addEventListener('change', () => {
+    if (!actuelle.effets) poser();
   });
 
   poser();
