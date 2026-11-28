@@ -20,12 +20,18 @@
 	}
 }
 
+# L'adresse vérifiée par Cloudflare Access ouvre le profil Ekus (v2.entrer) : elle n'est crue
+# que si elle arrive par le tunnel, c'est-à-dire du réseau famille. Ailleurs (Tailscale), on l'efface.
+# FAMILLE_RESEAU absent du .env : adresse de test qui ne correspond à rien, personne n'entre par e-mail.
 ekus.dromnas.win {
+	@hors_tunnel not remote_ip {$FAMILLE_RESEAU:192.0.2.1/32}
+	request_header @hors_tunnel -Cf-Access-Authenticated-User-Email
 	import app ekus
 }
 
-# accès de secours sans domaine : http://192.168.1.31:8086
+# accès de secours sans domaine : http://192.168.1.31:8086 (par code, jamais par e-mail)
 :8086 {
+	request_header -Cf-Access-Authenticated-User-Email
 	import app ekus
 }
 

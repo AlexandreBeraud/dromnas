@@ -40,6 +40,11 @@ services:
       # lecture de Last.fm pour Signal (jobs/lastfm.sh)
       LASTFM_API_KEY: ${LASTFM_API_KEY:-}
       LASTFM_USERNAME: ${LASTFM_USERNAME:-}
+      # Ekus : e-mails des profils recopiés dans la politique Access « Ekus famille » (backup/ekus-acces.sh)
+      CF_ACCESS_TOKEN: ${CF_ACCESS_TOKEN:-}
+      CF_ACCOUNT_ID: ${CF_ACCOUNT_ID:-}
+      CF_EKUS_POLICY_ID: ${CF_EKUS_POLICY_ID:-}
+      EKUS_ACCES_ACTIF: ${EKUS_ACCES_ACTIF:-}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./backup:/backup:ro
@@ -54,7 +59,7 @@ services:
         bind:
           propagation: rslave
     # 2 h 30 : juste avant les instantanés de 3 h
-    command: sh -c "apk add --no-cache bash rsync curl >/dev/null; cp /crontab /etc/crontabs/root && crond -f -l 8"
+    command: sh -c "apk add --no-cache bash rsync curl jq >/dev/null; cp /crontab /etc/crontabs/root && crond -f -l 8"
 
   # carte réseau Tailscale de Caddy : son propre 443, sans gêner le nginx d'UGOS
   ts-web:
@@ -82,6 +87,8 @@ services:
     network_mode: service:ts-web
     environment:
       CF_API_TOKEN: ${CF_API_TOKEN}
+      # sous-réseau Docker « famille » (cloudflared) : seul à pouvoir transmettre l'e-mail de Cloudflare Access
+      FAMILLE_RESEAU: ${FAMILLE_RESEAU:-192.0.2.1/32}
     volumes:
       - ./caddy:/etc/caddy:ro
       - ./caddy/data:/data
